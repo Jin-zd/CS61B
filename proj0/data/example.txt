@@ -1,4 +1,5 @@
 ally
+social
 beta
 cool
 deal
