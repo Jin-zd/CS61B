@@ -5,7 +5,6 @@ import aoa.utils.FileUtils;
 
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class NaiveLetterFreqGuesser implements Guesser {
     private final List<String> words;
@@ -25,18 +24,7 @@ public class NaiveLetterFreqGuesser implements Guesser {
      * This task is similar to something you did in hw0b!
      */
     public Map<Character, Integer> getFrequencyMap() {
-        Map<Character, Integer> countMap = new TreeMap<>();
-        for (String word : words) {
-            for (int i = 0; i < word.length(); i++) {
-                char ch = word.charAt(i);
-                if (!countMap.containsKey(ch)) {
-                    countMap.put(ch, 1);
-                } else {
-                    countMap.put(ch, countMap.get(ch) + 1);
-                }
-            }
-        }
-        return countMap;
+        return LFGHelper.getFrequencyMap(words);
     }
 
     /**
