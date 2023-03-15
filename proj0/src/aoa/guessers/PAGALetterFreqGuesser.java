@@ -16,7 +16,7 @@ public class PAGALetterFreqGuesser implements Guesser {
        PATTERN and the GUESSES that have been made. */
     public char getGuess(String pattern, List<Character> guesses) {
         List<String> filterWords = LFGHelper.getMatchedWords(words, pattern);
-        filterWords = LFGHelper.furtherFilterWords(filterWords, guesses, pattern);
+        LFGHelper.furtherFilterWords(filterWords, guesses, pattern);
         Map<Character, Integer> countMap = LFGHelper.getFrequencyMap(filterWords);
         return LFGHelper.maxFreCharacter(guesses, countMap);
     }

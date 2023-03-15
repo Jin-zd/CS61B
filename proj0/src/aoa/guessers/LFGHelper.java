@@ -80,7 +80,7 @@ public class LFGHelper {
     }
 
     //依据pattern进一步筛选与其中字母个数也相同的单词
-    public static List<String> furtherFilterWords(List<String> filterWords, List<Character> guesses, String pattern) {
+    public static void furtherFilterWords(List<String> filterWords, List<Character> guesses, String pattern) {
         List<Character> removeCharacter = new ArrayList<>();
         List<String> removeWords = new ArrayList<>();
         Map<Character, Integer> freChMap = new TreeMap<>();
@@ -133,7 +133,5 @@ public class LFGHelper {
         for (String word : removeWords) {
             filterWords.remove(word);
         }
-
-        return filterWords;
     }
 }
