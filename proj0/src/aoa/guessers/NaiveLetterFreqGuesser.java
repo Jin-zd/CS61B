@@ -1,9 +1,8 @@
 package aoa.guessers;
 
 import aoa.utils.FileUtils;
-import edu.princeton.cs.algs4.In;
+//import edu.princeton.cs.algs4.In;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -16,7 +15,7 @@ public class NaiveLetterFreqGuesser implements Guesser {
     }
 
     @Override
-    /** Makes a guess which ignores the given pattern. */
+    /* Makes a guess which ignores the given pattern. */
     public char getGuess(String pattern, List<Character> guesses) {
         return getGuess(guesses);
     }
@@ -45,24 +44,11 @@ public class NaiveLetterFreqGuesser implements Guesser {
      * (and therefore isn't present in GUESSES).
      */
     public char getGuess(List<Character> guesses) {
-        Map<Character, Integer> countMap;
-        countMap = getFrequencyMap();
+        Map<Character, Integer> countMap = getFrequencyMap();
         if (countMap.isEmpty()) {
             return '?';
         }
-        for (char guess : guesses) {
-            countMap.remove(guess);
-        }
-        char firstKey = countMap.keySet().iterator().next();
-        int m = countMap.get(firstKey);
-        char ch = firstKey;
-        for (char key : countMap.keySet()) {
-            if (countMap.get(key) > m) {
-                m = countMap.get(key);
-                ch = key;
-            }
-        }
-        return ch;
+        return LFGHelper.maxFreCharacter(guesses, countMap);
     }
 
     public static void main(String[] args) {
