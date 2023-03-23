@@ -12,7 +12,7 @@ public class BeeCountingStage implements AdventureStage {
 
     private final In in;
     private final Map<String, AdventureStage> responses;
-    private List<String> input;
+    private final List<String> input;
 
     public BeeCountingStage(In in) {
         this.in = in;
