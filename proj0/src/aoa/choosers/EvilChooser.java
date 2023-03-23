@@ -91,10 +91,8 @@ public class EvilChooser implements Chooser {
 
     @Override
     public String getWord() {
-        String allWord = "";
-        for (String word : wordPool) {
-            allWord = allWord + word + ' ';
-        }
-        return allWord;
+        int numWords = wordPool.size();
+        int randInt = StdRandom.uniform(numWords);
+        return wordPool.get(randInt);
     }
 }
