@@ -39,6 +39,7 @@ public class PalindromeStage implements AdventureStage {
                 input = this.in.readLine();
             }
 
+
             IntList numLst = digitsToIntList(input);
             IntList reversedLst = reverseList(numLst);
 
@@ -77,8 +78,8 @@ public class PalindromeStage implements AdventureStage {
      */
     private static IntList digitsToIntList(String s) {
         int[] a = new int[s.length()];
-        for (int i = s.length(); i > 0; i++) {
-            a[s.length() - i] = Character.getNumericValue(s.charAt(i));
+        for (int i = s.length(); i > 0; i--) {
+            a[s.length() - i] = Character.getNumericValue(s.charAt(i - 1));
         }
         return IntList.of(a);
     }

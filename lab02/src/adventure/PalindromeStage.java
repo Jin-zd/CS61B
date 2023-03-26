@@ -34,22 +34,19 @@ public class PalindromeStage implements AdventureStage {
                 """);
         while (true) {
             String input = in.readLine();
-            while (!AdventureUtils.isInt(input) && input != null) {
+            while (!AdventureUtils.isInt(input)) {
                 System.out.println("Please enter a valid integer.");
                 input = this.in.readLine();
+                if(input == null) {
+                    break;
+                }
             }
-            if(input == null){
+            if(input == null) {
                 break;
             }
-
             IntList numLst = digitsToIntList(input);
-            IntList reversedLst = null;
-            // Uncomment the following line if you are working through the optional section
-            reversedLst = reverseList(numLst);
+            IntList reversedLst = reverseList(numLst);
 
-            if (reversedLst == null) {
-                break;
-            }
             if (numLst.equals(reversedLst)) {
                 System.out.println("Wow, nice room number!");
                 break;
@@ -69,9 +66,7 @@ public class PalindromeStage implements AdventureStage {
         return responses;
     }
 
-    /**
-     * Returns a new IntList with the contents of the original IntList in reverse order.
-     */
+    /** Returns a new IntList with the contents of the original IntList in reverse order.*/
     private static IntList reverseList(IntList l) {
         IntList reversed = null;
         while (l.rest != null) {
