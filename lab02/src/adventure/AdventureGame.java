@@ -37,10 +37,6 @@ public class AdventureGame {
         AdventureStage poss;
         while (true) {
             boolean flag = in.hasNextLine();
-            if(!flag){
-                poss = null;
-                break;
-            }
             String line = in.readLine();
             poss = this.parseResponse(line);
             if (poss != null) {
