@@ -22,7 +22,9 @@ public class Experiments {
         }
     }
 
-    /** Computes the nth Fibonacci number using a slow naive recursive strategy.*/
+    /**
+     * Computes the nth Fibonacci number using a slow naive recursive strategy.
+     */
     private static int fib(int n) {
         if (n < 0) {
             return 0;
@@ -60,8 +62,20 @@ public class Experiments {
         List<Integer> opCounts = new ArrayList<>();
 
         // TODO: YOUR CODE HERE
+        int ops = 100;
 
-        return null;
+        for (int N = 1000; N <= 128000; N = N * 2) {
+            Ns.add(N);
+            opCounts.add(ops);
+            Stopwatch sw = new Stopwatch();
+            AList<Integer> lst = new AList<>();
+            for (int i = 0; i < N; i++) {
+                lst.addLast(1);
+            }
+            times.add(sw.elapsedTime());
+        }
+
+        return new TimingData(Ns, times, opCounts);
     }
 
 
@@ -71,14 +85,28 @@ public class Experiments {
         List<Integer> opCounts = new ArrayList<>();
 
         // TODO: YOUR CODE HERE
+        int ops = 10000;
 
-        return null;
+        for (int N = 1000; N <= 128000; N = N * 2) {
+            Ns.add(N);
+            opCounts.add(ops);
+            SLList<Integer> slList = new SLList<>();
+            for (int i = 0; i < N; i++) {
+                slList.addLast(1);
+            }
+            Stopwatch sw = new Stopwatch();
+            for (int i = 0; i < ops; i++) {
+                int n = slList.getLast();
+            }
+            times.add(sw.elapsedTime());
+        }
+        return new TimingData(Ns, times, opCounts);
 
     }
 
     public static void main(String[] args) {
         // TODO: Modify the following line to change the experiment you're running
-        TimingData td = exampleFibonacciExperiment();
+        TimingData td = timeSLListGetLast();
         // Modify this line to make the chart title make sense
         String title = "Naive Recursive Fibonacci";
 
