@@ -7,6 +7,8 @@ public class ArrayDeque<T> implements Deque<T> {
     private int nextlast;
     private int size;
 
+    private double useRate;
+
     public ArrayDeque() {
         items = (T[]) new Object[8];
         nextfirst = 4;
@@ -31,27 +33,57 @@ public class ArrayDeque<T> implements Deque<T> {
         return x;
     }
 
-    private void sizeCalculate() {
-        if (size == items.length) {
-            resize(size * 2);
-        }
-        size += 1;
-
+    private void useRateCalculate() {
+        useRate = size / (double) items.length;
     }
 
-    private void resize(int capacity) {
+    private void sizeCalculate() {
+        if (size == items.length) {
+            resizeUp(size * 2);
+        }
+        size += 1;
+        useRateCalculate();
+    }
+
+    private void resizeUp(int capacity) {
         T[] temItems = (T[]) new Object[capacity];
         int first = circleCalculate(nextfirst, 1, true);
-        int last = circleCalculate(nextlast, 1, false);
-        for (int i = first; i != last; i = circleCalculate(i, 1, true)) {
+        int i = first;
+        int j = 0;
+        while (j < size) {
             if (i < first) {
                 temItems[i] = items[i];
             } else {
-                temItems[i + capacity / 2] = temItems[i];
+                temItems[i + capacity / 2] = items[i];
             }
+            i = circleCalculate(i, 1, true);
+            j += 1;
         }
         items = temItems;
-        nextfirst = first + capacity / 2;
+        nextfirst = circleCalculate(first + capacity / 2, 1, false);
+    }
+
+    private void resizeDown() {
+        if (useRate >= 0.25 && items.length / 2 <= 8) {
+            return;
+        }
+        int capacity = items.length / 2;
+        T[] temItems = (T[]) new Object[capacity];
+        int first = circleCalculate(nextfirst, 1, true);
+        int i = first;
+        int j = 0;
+        while (j < size) {
+            if (i < first) {
+                temItems[i] = items[i];
+            } else {
+                temItems[i - capacity] = items[i];
+            }
+            i = circleCalculate(i, 1, true);
+            j += 1;
+        }
+        items = temItems;
+        nextfirst = circleCalculate(first - capacity, 1, false);
+        useRateCalculate();
     }
 
     @Override
@@ -92,6 +124,8 @@ public class ArrayDeque<T> implements Deque<T> {
         T returnT = get(0);
         nextfirst = circleCalculate(nextfirst, 1, true);
         size -= 1;
+        useRateCalculate();
+        resizeDown();
         return returnT;
     }
 
@@ -100,6 +134,8 @@ public class ArrayDeque<T> implements Deque<T> {
         T returnT = get(size - 1);
         nextlast = circleCalculate(nextlast, 1, false);
         size -= 1;
+        useRateCalculate();
+        resizeDown();
         return returnT;
     }
 

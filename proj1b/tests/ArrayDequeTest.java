@@ -102,14 +102,14 @@ public class ArrayDequeTest {
         assertThat(arrd1.get(-76)).isEqualTo(null);
         assertThat(arrd1.get(8)).isEqualTo(null);
         assertThat(arrd1.get(0)).isEqualTo(5);
-        assertThat(arrd1.get(3)).isEqualTo(8);
+        assertThat(arrd1.get(3)).isEqualTo(4);
 
         arrd1.removeLast();
         assertThat(arrd1.get(arrd1.size() - 1)).isEqualTo(1);
     }
 
     @Test
-    public void resizeTest() {
+    public void resizeUpTest() {
         ArrayDeque<Integer> arrd1 = new ArrayDeque<>();
 
         arrd1.addFirst(0);
@@ -117,7 +117,7 @@ public class ArrayDequeTest {
         arrd1.addFirst(2);
         arrd1.addLast(3);
         arrd1.addFirst(4);
-        arrd1.addFirst(6);
+        arrd1.addFirst(5);
         arrd1.addFirst(6);
         arrd1.addFirst(7);
         arrd1.addFirst(8);
@@ -126,7 +126,7 @@ public class ArrayDequeTest {
         assertThat(arrd1.size()).isEqualTo(9);
         assertThat(arrd1.get(0)).isEqualTo(8);
         assertThat(arrd1.get(8)).isEqualTo(3);
-        assertThat(arrd1.get(7)).isEqualTo(6);
+        assertThat(arrd1.get(7)).isEqualTo(0);
 
         arrd1.addLast(9);
         arrd1.addLast(10);
@@ -153,11 +153,17 @@ public class ArrayDequeTest {
         assertThat(arrd2.toList()).containsExactly(7, 6, 5, 4, 3, 0, 1, 8, 9).inOrder();
         assertThat(arrd2.size()).isEqualTo(9);
         assertThat(arrd2.get(0)).isEqualTo(7);
-        assertThat(arrd2.get(9)).isEqualTo(9);
+        assertThat(arrd2.get(8)).isEqualTo(9);
         assertThat(arrd2.get(4)).isEqualTo(3);
 
         assertThat(arrd2.removeFirst()).isEqualTo(7);
-        assertThat(arrd2.removeFirst()).isEqualTo(6);
-        assertThat(arrd2.toList()).containsExactly(5, 4, 3, 0, 1, 8, 9).inOrder();
+        assertThat(arrd2.removeLast()).isEqualTo(9);
+        assertThat(arrd2.removeLast()).isEqualTo(8);
+        assertThat(arrd2.toList()).containsExactly(6, 5, 4, 3, 0, 1).inOrder();
+    }
+
+    public void resizeDown() {
+        ArrayDeque<Integer> arrd1 = new ArrayDeque<>();
+
     }
 }
