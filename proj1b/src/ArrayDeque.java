@@ -3,16 +3,16 @@ import java.util.List;
 
 public class ArrayDeque<T> implements Deque<T> {
     private T[] items;
-    private int nextfirst;
-    private int nextlast;
+    private int nextFirst;
+    private int nextLast;
     private int size;
 
     private double useRate;
 
     public ArrayDeque() {
         items = (T[]) new Object[8];
-        nextfirst = 4;
-        nextlast = 5;
+        nextFirst = 4;
+        nextLast = 5;
         size = 0;
     }
 
@@ -47,7 +47,7 @@ public class ArrayDeque<T> implements Deque<T> {
 
     private void resizeUp(int capacity) {
         T[] temItems = (T[]) new Object[capacity];
-        int first = circleCalculate(nextfirst, 1, true);
+        int first = circleCalculate(nextFirst, 1, true);
         int i = first;
         int j = 0;
         while (j < size) {
@@ -60,7 +60,7 @@ public class ArrayDeque<T> implements Deque<T> {
             j += 1;
         }
         items = temItems;
-        nextfirst = circleCalculate(first + capacity / 2, 1, false);
+        nextFirst = circleCalculate(first + capacity / 2, 1, false);
     }
 
     private void resizeDown() {
@@ -69,7 +69,7 @@ public class ArrayDeque<T> implements Deque<T> {
         }
         int capacity = items.length / 2;
         T[] temItems = (T[]) new Object[capacity];
-        int first = circleCalculate(nextfirst, 1, true);
+        int first = circleCalculate(nextFirst, 1, true);
         int i = first;
         int j = 0;
         while (j < size) {
@@ -82,22 +82,22 @@ public class ArrayDeque<T> implements Deque<T> {
             j += 1;
         }
         items = temItems;
-        nextfirst = circleCalculate(first - capacity, 1, false);
+        nextFirst = circleCalculate(first - capacity, 1, false);
         useRateCalculate();
     }
 
     @Override
     public void addFirst(T x) {
         sizeCalculate();
-        items[nextfirst] = x;
-        nextfirst = circleCalculate(nextfirst, 1, false);
+        items[nextFirst] = x;
+        nextFirst = circleCalculate(nextFirst, 1, false);
     }
 
     @Override
     public void addLast(T x) {
         sizeCalculate();
-        items[nextlast] = x;
-        nextlast = circleCalculate(nextlast, 1, true);
+        items[nextLast] = x;
+        nextLast = circleCalculate(nextLast, 1, true);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class ArrayDeque<T> implements Deque<T> {
     @Override
     public T removeFirst() {
         T returnT = get(0);
-        nextfirst = circleCalculate(nextfirst, 1, true);
+        nextFirst = circleCalculate(nextFirst, 1, true);
         size -= 1;
         useRateCalculate();
         resizeDown();
@@ -132,7 +132,7 @@ public class ArrayDeque<T> implements Deque<T> {
     @Override
     public T removeLast() {
         T returnT = get(size - 1);
-        nextlast = circleCalculate(nextlast, 1, false);
+        nextLast = circleCalculate(nextLast, 1, false);
         size -= 1;
         useRateCalculate();
         resizeDown();
@@ -144,7 +144,7 @@ public class ArrayDeque<T> implements Deque<T> {
         if (index < 0 || index > size - 1) {
             return null;
         }
-        int realFirst = circleCalculate(nextfirst, 1, true);
+        int realFirst = circleCalculate(nextFirst, 1, true);
         int realIndex = circleCalculate(realFirst, index, true);
         return items[realIndex];
     }
