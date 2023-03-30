@@ -162,8 +162,30 @@ public class ArrayDequeTest {
         assertThat(arrd2.toList()).containsExactly(6, 5, 4, 3, 0, 1).inOrder();
     }
 
+    @Test
     public void resizeDown() {
         ArrayDeque<Integer> arrd1 = new ArrayDeque<>();
 
+        for (int i = 0; i < 16; i++) {
+            arrd1.addFirst(i);
+        }
+
+        for (int i = 0; i < 13; i++) {
+            arrd1.removeLast();
+        }
+        assertThat(arrd1.toList()).containsExactly(15, 14, 13).inOrder();
+
+        ArrayDeque<Integer> arrd2 = new ArrayDeque<>();
+
+        for (int i = 0; i < 16; i++) {
+            arrd2.addFirst(i);
+        }
+
+        for(int i = 0; i < 7; i++) {
+            arrd2.removeLast();
+            arrd2.removeFirst();
+        }
+
+        assertThat(arrd2.toList()).containsExactly(8, 7).inOrder();
     }
 }

@@ -73,7 +73,7 @@ public class ArrayDeque<T> implements Deque<T> {
         int i = first;
         int j = 0;
         while (j < size) {
-            if (i < first) {
+            if (i < capacity) {
                 temItems[i] = items[i];
             } else {
                 temItems[i - capacity] = items[i];
