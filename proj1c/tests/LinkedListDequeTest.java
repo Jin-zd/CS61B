@@ -1,17 +1,17 @@
-import deque.ArrayDeque;
+
+import deque.LinkedListDeque;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
-
-public class ArrayDequeTest {
+public class LinkedListDequeTest {
     @Test
     public void equalsTest() {
-        ArrayDeque<Integer> arrd1 = new ArrayDeque<>();
+        LinkedListDeque<Integer> arrd1 = new LinkedListDeque<>();
         arrd1.addLast(1);
         arrd1.addLast(2);
         arrd1.addLast(3);
 
-        ArrayDeque<Integer> arrd2 = new ArrayDeque<>();
+        LinkedListDeque<Integer> arrd2 = new LinkedListDeque<>();
         arrd2.addLast(1);
         arrd2.addLast(2);
         arrd2.addLast(3);
@@ -27,7 +27,7 @@ public class ArrayDequeTest {
 
     @Test
     public void iteratorTest() {
-        ArrayDeque<Integer> arrd1 = new ArrayDeque<>();
+        LinkedListDeque<Integer> arrd1 = new LinkedListDeque<>();
         arrd1.addLast(1);
         arrd1.addLast(2);
         arrd1.addLast(3);
@@ -41,7 +41,7 @@ public class ArrayDequeTest {
 
     @Test
     public void toStringTest() {
-        ArrayDeque<Integer> arrd1 = new ArrayDeque<>();
+        LinkedListDeque<Integer> arrd1 = new LinkedListDeque<>();
         arrd1.addLast(1);
         arrd1.addLast(2);
         arrd1.addLast(3);
