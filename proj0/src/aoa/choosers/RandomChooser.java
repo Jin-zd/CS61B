@@ -39,17 +39,14 @@ public class RandomChooser implements Chooser {
         int randInt = StdRandom.uniform(numWords);
         chosenWord = sameLengthWords.get(randInt);
 
-        pattern = "";
-        for (int i = 0; i < wordLength; i++) {
-            pattern += "-";
-        }
+        pattern = "-".repeat(wordLength);
     }
 
     @Override
     public int makeGuess(char letter) {
         int count = 0;
         char[] patternArray = new char[chosenWord.length()];
-        String temPattern = "";
+        StringBuilder temPattern = new StringBuilder();
         for (int i = 0; i < pattern.length(); i++) {
             patternArray[i] = pattern.charAt(i);
         }
@@ -58,9 +55,9 @@ public class RandomChooser implements Chooser {
                 count++;
                 patternArray[i] = letter;
             }
-            temPattern += patternArray[i];
+            temPattern.append(patternArray[i]);
         }
-        pattern = temPattern;
+        pattern = temPattern.toString();
         return count;
     }
 

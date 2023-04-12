@@ -38,10 +38,7 @@ public class EvilChooser implements Chooser {
         }
 
         wordPool = sameLengthWords;
-        pattern = "";
-        for (int i = 0; i < wordLength; i++) {
-            pattern += "-";
-        }
+        pattern = "-".repeat(wordLength);
     }
 
     @Override
