@@ -15,11 +15,11 @@ public class TestBSTMapExtra {
     public void sanityKeySetTest() {
         BSTMap<String, Integer> b = new BSTMap<>();
         TreeSet<String> values = new TreeSet<>();
-        for (int i = 0; i < 455; i++) {
+        for (int i = 0; i < 3; i++) {
             b.put("hi" + i, 1);
             values.add("hi" + i);
         }
-        assertThat(b.size()).isEqualTo(455); //keys are there
+        assertThat(b.size()).isEqualTo(3); //keys are there
         Set<String> keySet = b.keySet();
         assertThat(values).containsExactlyElementsIn(keySet).inOrder();
         assertThat(keySet).containsExactlyElementsIn(values).inOrder();

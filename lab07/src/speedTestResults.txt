@@ -1,0 +1,47 @@
+This program inserts random Strings of length L into different types of maps as <String, Integer> pairs.
+Please enter desired length of each string: 5
+
+Enter # strings to insert into the maps: 10000
+class ULLMap: 0.17 sec
+class BSTMap: 0.01 sec
+Java's Built-in TreeMap: 0.01 sec
+Java's Built-in HashMap: 0.00 sec
+Would you like to try more timed-tests? (y/n)y
+
+Enter # strings to insert into the maps: 100000
+--Stack Overflow -- couldn't add 100000 strings of length 5.
+class BSTMap: 0.07 sec
+Java's Built-in TreeMap: 0.04 sec
+Java's Built-in HashMap: 0.02 sec
+Would you like to try more timed-tests? (y/n)y
+
+Enter # strings to insert into the maps: 1000000
+--Stack Overflow -- couldn't add 1000000 strings of length 5.
+class BSTMap: 1.49 sec
+Java's Built-in TreeMap: 1.04 sec
+Java's Built-in HashMap: 0.29 sec
+Would you like to try more timed-tests? (y/n)y
+
+Enter # strings to insert into the maps: 10000000
+--Stack Overflow -- couldn't add 10000000 strings of length 5.
+class BSTMap: 19.87 sec
+Java's Built-in TreeMap: 15.15 sec
+Java's Built-in HashMap: 3.97 sec
+Would you like to try more timed-tests? (y/n)n
+
+
+This program inserts lexicographically increasing Strings into Maps as <String, Integer> pairs.
+
+Enter # strings to insert into the maps: 10000
+class ULLMap: 0.68 sec
+class BSTMap: 1.64 sec
+Java's Built-in TreeMap: 0.01 sec
+Java's Built-in HashMap: 0.01 sec
+Would you like to try more timed-tests? (y/n): y
+
+Enter # strings to insert into the maps: 100000
+--Stack Overflow -- couldn't add 100000 strings.
+--Stack Overflow -- couldn't add 100000 strings.
+Java's Built-in TreeMap: 0.06 sec
+Java's Built-in HashMap: 0.02 sec
+Would you like to try more timed-tests? (y/n): n
