@@ -182,10 +182,10 @@ public class TestMyHashMap {
 
     public static void sanityResizeTest(MyHashMap<String, Integer> m, int initialCapacity, double loadFactor) {
         // Times out after 10 seconds
-        assertTimeoutPreemptively(Duration.ofSeconds(1000), () -> {
+        assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
             int backingArrayCapacity = sizeOfBackingArray(m);
             assertThat(backingArrayCapacity).isEqualTo(initialCapacity);
-            for (int i = 0; i < 100000; i++) {
+            for (int i = 0; i < 1000000; i++) {
                 m.put("hi" + i, i);
                 if (1.0 * i / backingArrayCapacity > loadFactor) {
                     assertThat(sizeOfBackingArray(m)).isGreaterThan(backingArrayCapacity);

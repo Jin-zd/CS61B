@@ -123,7 +123,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
                 }
             }
         }
-//        int index = Math.floorMod(key.hashCode() & 0x7fffffff, buckets.length);
+//        int index = Math.floorMod(key.hashCode(), buckets.length);
 //        for (Node node : buckets[index]) {
 //            if (node.key.equals(key)) {
 //                return node;
@@ -141,18 +141,13 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
             return;
         }
         Collection<Node>[] tempBuckets = createTable(buckets.length * 2);
-        for (int i  = 0; i < buckets.length; i++) {
-            if (buckets[i] == null || buckets[i].isEmpty()) {
+        for (Collection<Node> bucket : buckets) {
+            if (bucket == null || bucket.isEmpty()) {
                 continue;
             }
-            for (Node node : buckets[i]) {
+            for (Node node : bucket) {
                 int hash = node.key.hashCode() & 0x7fffffff;
-                int index;
-                if ((hash & buckets.length) == 0) {
-                    index = i;
-                } else {
-                    index = i + buckets.length;
-                }
+                int index = Math.floorMod(hash, tempBuckets.length);
                 if (tempBuckets[index] == null) {
                     tempBuckets[index] = createBucket();
                 }
@@ -170,8 +165,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         if (containsKey(key)) {
             Objects.requireNonNull(getNode(key)).value = value;
         } else {
-            Node newNode = new Node(key, value);
-            int index = Math.floorMod(newNode.key.hashCode() & 0x7fffffff, buckets.length);
+            Node newNode = createNode(key, value);
+            int index = Math.floorMod(newNode.key.hashCode(), buckets.length);
             if (buckets[index] == null) {
                 buckets[index] = createBucket();
             }
@@ -210,16 +205,54 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        Set<K> set = new HashSet<>();
+        for (Collection<Node> bucket : buckets) {
+            if (bucket == null || bucket.isEmpty()) {
+                continue;
+            }
+            for (Node node : bucket) {
+                set.add(node.key);
+            }
+        }
+        return set;
     }
 
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        for (Collection<Node> bucket : buckets) {
+            if (bucket == null || bucket.isEmpty()) {
+                continue;
+            }
+            for (Node node : bucket) {
+                if (node.key.equals(key)) {
+                    V returnValue = node.value;
+                    bucket.remove(node);
+                    return returnValue;
+                }
+            }
+        }
+        return null;
+    }
+
+    private class MyHashMapIterator implements Iterator<K> {
+        private final Set<K> KeySet;
+
+        public MyHashMapIterator() {
+            KeySet = keySet();
+        }
+        @Override
+        public boolean hasNext() {
+            return this.KeySet.iterator().hasNext();
+        }
+
+        @Override
+        public K next() {
+            return this.KeySet.iterator().next();
+        }
     }
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return new MyHashMapIterator();
     }
 }
