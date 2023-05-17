@@ -98,7 +98,7 @@ public class TestBSTMapExtra {
         assertThat(rightChild.remove('D')).isEqualTo(4);
         assertThat(rightChild.remove('G')).isEqualTo(7);
         assertThat(rightChild.remove('A')).isEqualTo(100);
-        assertThat(rightChild.size()).isEqualTo(9);
+        assertThat(rightChild.size()).isEqualTo(8);
 
         BSTMap<Character, Integer> leftChild = new BSTMap<>();
         leftChild.put('B', 1);
