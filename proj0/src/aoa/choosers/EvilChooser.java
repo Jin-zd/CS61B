@@ -3,10 +3,7 @@ package aoa.choosers;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import edu.princeton.cs.algs4.StdRandom;
 import aoa.utils.FileUtils;

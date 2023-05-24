@@ -1,3 +1,4 @@
+import edu.princeton.cs.algs4.In;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -160,6 +161,13 @@ public class ArrayDequeTest {
         assertThat(arrd2.removeLast()).isEqualTo(9);
         assertThat(arrd2.removeLast()).isEqualTo(8);
         assertThat(arrd2.toList()).containsExactly(6, 5, 4, 3, 0, 1).inOrder();
+
+        ArrayDeque<Integer> arrd3 = new ArrayDeque<>();
+        for (int i = 0; i < 50000; i++) {
+            arrd3.addLast(i);
+            assertThat(arrd3.get(i)).isEqualTo(i);
+            assertThat(arrd3.size()).isEqualTo(i + 1);
+        }
     }
 
     @Test

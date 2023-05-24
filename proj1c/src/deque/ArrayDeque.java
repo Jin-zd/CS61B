@@ -92,7 +92,7 @@ public class ArrayDeque<T> implements Deque<T> {
     }
 
     private void resizeDown() {
-        if (useRate >= 0.25 && items.length / 2 <= 8) {
+        if (useRate >= 0.25 || items.length / 2 <= 8) {
             return;
         }
         int capacity = items.length / 2;
