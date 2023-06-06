@@ -3,8 +3,6 @@ package ngordnet.proj2b_testing;
 import ngordnet.browser.NgordnetQuery;
 import ngordnet.browser.NgordnetQueryHandler;
 import ngordnet.main.HyponymsHandler;
-import ngordnet.ngrams.NGramMap;
-import ngordnet.word_net.WordNet;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
