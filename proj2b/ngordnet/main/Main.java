@@ -17,6 +17,6 @@ public class Main {
         hns.startUp();
         hns.register("history", new HistoryHandler(ngm));
         hns.register("historytext", new HistoryTextHandler(ngm));
-        hns.register("hyponyms", new HyponymsHandler());
+        hns.register("hyponyms", new HyponymsHandler(wordFile, countFile, synsetFile, hyponymFile));
     }
 }

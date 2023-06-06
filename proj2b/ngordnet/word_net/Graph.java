@@ -36,7 +36,7 @@ public class Graph {
 
     public Iterable<Integer> adj(int v) {
         Set<Integer> set = new TreeSet<>();
-        if (v > 0 && v < adjTable.length) {
+        if (v >= 0 && v < adjTable.length) {
             if (adjTable[v].isEmpty()) {
                 return null;
             }
@@ -48,7 +48,15 @@ public class Graph {
     public Set<Integer> getMatchVex(String word) {
         Set<Integer> set = new TreeSet<>();
         for (int vex : nodeMap.keySet()) {
-            if (nodeMap.get(vex).contains(word)) {
+            String[] words = nodeMap.get(vex).split(" ");
+            boolean flag = false;
+            for (String singleWord : words) {
+                if (singleWord.equals(word)) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag) {
                 set.add(vex);
             }
         }
