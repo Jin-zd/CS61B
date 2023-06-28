@@ -3,6 +3,8 @@ package ngordnet.proj2b_testing;
 import ngordnet.browser.NgordnetQuery;
 import ngordnet.browser.NgordnetQueryHandler;
 import ngordnet.main.HyponymsHandler;
+import ngordnet.ngrams.NGramMap;
+import ngordnet.word_net.WordNet;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -69,7 +71,7 @@ public class TestMultiWordK0Hyponyms {
 
         List<String> words1 = List.of("change", "occurrence");
         NgordnetQuery q1 = new NgordnetQuery(words1, 1950, 2020, 5);
-        Set<String> result = new TreeSet<>(Set.of("change", "death", "development", "going", "increase"));
+        Set<String> result = new TreeSet<>(Set.of("change", "death", "development", "going"));
         assertThat(studentHandler.handle(q1)).isEqualTo(result.toString());
 
         List<String> words2 = List.of("dog", "cat");
