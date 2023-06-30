@@ -1,5 +1,6 @@
 package knightworld;
 
+import com.google.common.truth.DoubleSubject;
 import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
@@ -14,54 +15,90 @@ public class KnightWorld {
 
     private TETile[][] tiles;
     private final long seed;
-    private static final TETile CHESS_FLOOR = new TETile('■', Color.GRAY, Color.BLACK, "Chess floor");
-    // TODO: Add additional instance variables here
+    private final int size;
+    private static final TETile CHESS_FLOOR = new TETile('▢', Color.BLACK, Color.GRAY,
+            "chess floor");
 
     public KnightWorld(int width, int height, int holeSize) {
-        // TODO: Fill in this constructor and class, adding helper methods and/or classes as necessary to draw the
-        //  specified pattern of the given hole size for a window of size width x height. If you're stuck on how to
-        //  begin, look at the provided demo code!
         seed = System.currentTimeMillis();
         tiles = new TETile[width][height];
-        KnightTiles(holeSize);
+        size = holeSize;
+        KnightTiles();
     }
 
-    private void KnightTiles(int holeSize) {
-        for (int j = 0; j < tiles[0].length; j++) {
-                if (j % holeSize == 0) {
-                    tiles[0][j] = randomTETile();
-                }
-                else {
-                    tiles[0][j] = tiles[0][j - 1];
+    private void KnightTiles() {
+        initialFiveMulFive();
+        for (int j = 0; j < 5 * size; j += size) {
+            repeatTilesY(j);
+        }
+        for (int i = 0; i < tiles.length; i += size) {
+            repeatTilesX(i);
+        }
+    }
+
+    private void initialFiveMulFive() {
+        int index = randomTETile();
+        drawSquare(0, index, Tileset.NOTHING, 5 * size, 5 * size);
+        for (int i = 0; i < 5 * size; i += size) {
+            for (int j = 0; j < 5 * size; j += size) {
+                if (tiles[i][j] != null && tiles[i][j].description().equals("nothing")) {
+                    singleHoleSurrounded(i, j, 5 * size, 5 * size);
                 }
             }
-        firstFloor(holeSize);
-        restPosition(holeSize);
-    }
-
-    private void firstFloor(int holeSize) {
-        for (int i = 1; i < holeSize; i++) {
-            for (int j = 0; j < tiles[0].length; i++) {
-                tiles[i][j] = tiles[i - 1][j];
+        }
+        for (int i = 0; i < 5 * size; i += 1) {
+            for (int j = 0; j < 5 * size; j += 1) {
+                if (tiles[i][j] == null) {
+                    tiles[i][j] = CHESS_FLOOR;
+                }
             }
         }
     }
 
-    private void restPosition (int holeSize) {
-
+    private void singleHoleSurrounded(int x, int y, int xLimited, int yLimited) {
+        drawSquare(x + size, y + 2 * size, Tileset.NOTHING, xLimited, yLimited);
+        drawSquare(x + 2 * size, y - size, Tileset.NOTHING, xLimited, yLimited);
+        drawSquare(x - size, y - 2 * size, Tileset.NOTHING, xLimited, yLimited);
+        drawSquare(x - 2 * size, y + size, Tileset.NOTHING, xLimited, yLimited);
     }
 
-    private TETile randomTETile() {
+
+    private void repeatTilesX(int i) {
+        for (int j = 5 * size; j < tiles[0].length; j += size) {
+            drawSquare(i, j, tiles[i][j - 5 * size], tiles.length, tiles[0].length);
+        }
+    }
+
+    private void repeatTilesY(int j) {
+        for (int i = 5 * size; i < tiles.length; i += size) {
+            drawSquare(i, j, tiles[i - 5 * size][j], tiles.length, tiles[0].length);
+        }
+    }
+
+    private void drawSquare(int i, int j, TETile tile, int xLimited, int yLimited) {
+        if (i < 0 || j < 0 || i > xLimited || j > yLimited) {
+            return;
+        }
+        for (int x = i; x < i + size && x < xLimited; x++) {
+            for (int y = j; y < j + size && y < yLimited; y++) {
+                tiles[x][y] = tile;
+            }
+        }
+    }
+
+    private int randomTETile() {
         Random r = new Random(seed);
-        int ran = r.nextInt(2);
-        return switch (ran) {
-            case 0 -> CHESS_FLOOR;
-            case 1 -> Tileset.NOTHING;
-            default -> throw new IllegalStateException("Unexpected value: " + ran);
-        };
+        int ran = r.nextInt(5);
+        if (ran == 0) {
+            return ran;
+        } else {
+            return ran * size;
+        }
     }
 
-    /** Returns the tiles associated with this KnightWorld. */
+    /**
+     * Returns the tiles associated with this KnightWorld.
+     */
     public TETile[][] getTiles() {
         return tiles;
     }
