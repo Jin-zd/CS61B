@@ -1,6 +1,5 @@
 package knightworld;
 
-import com.google.common.truth.DoubleSubject;
 import tileengine.TERenderer;
 import tileengine.TETile;
 import tileengine.Tileset;
@@ -16,7 +15,7 @@ public class KnightWorld {
     private TETile[][] tiles;
     private final long seed;
     private final int size;
-    private static final TETile CHESS_FLOOR = new TETile('▢', Color.BLACK, Color.GRAY,
+    private static final TETile CHESS_FLOOR = new TETile('█', new Color(64,64,64), Color.BLACK,
             "chess floor");
 
     public KnightWorld(int width, int height, int holeSize) {

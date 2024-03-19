@@ -1,8 +1,6 @@
-import edu.princeton.cs.algs4.In;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
 
 public class ArrayDequeTest {
     @Test
@@ -189,7 +187,7 @@ public class ArrayDequeTest {
             arrd2.addFirst(i);
         }
 
-        for(int i = 0; i < 7; i++) {
+        for (int i = 0; i < 7; i++) {
             arrd2.removeLast();
             arrd2.removeFirst();
         }

@@ -23,7 +23,7 @@ public class AoAGame {
 
         // set up the the chooser and start the game
         //Chooser chooser = new RandomChooser(wordLength, DICTIONARY_FILE);
-        Chooser chooser = new EvilChooser(wordLength, DICTIONARY_FILE);
+        Chooser chooser = new RandomChooser(wordLength, DICTIONARY_FILE);
         Guesser guesser = new ConsoleGuesser(console);
         //Guesser guesser = new PAGALetterFreqGuesser(DICTIONARY_FILE);
         playGame(chooser, guesser, maxGuesses);
