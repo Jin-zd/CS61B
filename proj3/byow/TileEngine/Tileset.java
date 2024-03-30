@@ -22,7 +22,7 @@ public class Tileset {
             "wall");
     public static final TETile FLOOR = new TETile('·', new Color(128, 192, 128), Color.yellow,
             "floor");
-    public static final TETile ROOM = new TETile('*', Color.blue, Color.gray, "room");
+    public static final TETile ROOM = new TETile('·', Color.blue, Color.gray, "room");
     public static final TETile NOTHING = new TETile(' ', Color.black, Color.black, "nothing");
     public static final TETile GRASS = new TETile('"', Color.green, Color.black, "grass");
     public static final TETile WATER = new TETile('≈', Color.blue, Color.black, "water");
