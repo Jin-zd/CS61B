@@ -2,28 +2,17 @@ package byow.Core;
 
 import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
-import byow.TileEngine.Tileset;
-import byow.World.Path;
-import byow.World.Rooms;
+import byow.World.World;
 import edu.princeton.cs.algs4.In;
 import org.junit.Test;
 import org.junit.jupiter.api.MethodOrderer;
 import ucb.test.TimeLimitedTests;
-
-import java.awt.*;
-import java.lang.reflect.Array;
-import java.util.*;
-import java.util.List;
 
 public class Engine {
     static TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
     public static final int HEIGHT = 50;
-
-    private static final int DIST = 2;
-    
-    private TETile[][] world;
 
     /**
      * Method used for exploring a fresh world. This method should handle all inputs,
@@ -67,60 +56,22 @@ public class Engine {
             return null;
         }
         int seed = Integer.parseInt(input.substring(1, input.length() - 1));
-        
-        worldGenerator(seed);
 
-        return world;
+        int dist = 2;
+
+        World world = new World(WIDTH, HEIGHT, dist, seed);
+        world.worldGenerator();
+
+        return world.getWorld();
     }
-
-    /**
-     * the World Generator
-     *
-     * @param seed the random number seed
-     */
-    private void worldGenerator(int seed) {
-        world = new TETile[WIDTH][HEIGHT];
-
-        initialWorld();
-
-        Rooms rooms = new Rooms(world, DIST);
-        rooms.roomGenerator(seed);
-
-        Path path = new Path(world, DIST);
-        path.pathGenerator();
-
-        rooms.roomConnect(seed);
-
-    }
-
-    /**
-     * Initial the world array
-     *
-     */
-    private void initialWorld() {
-        for (int i = DIST; i < WIDTH; i += 3) {
-            for (int j = DIST; j < HEIGHT; j += 3) {
-                world[i][j] = Tileset.FLOOR;
-            }
-        }
-
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                if (world[i][j] == null) {
-                    world[i][j] = Tileset.NOTHING;
-                }
-            }
-        }
-    }
-
 
     public static void main(String[] args) {
-        String inputString = "N45123S";
+        String inputString = "N58621S";
 
         Engine engineTest = new Engine();
         TETile[][] world = engineTest.interactWithInputString(inputString);
 
-        ter.initialize(WIDTH, HEIGHT);
+        ter.initialize(world.length, world[0].length);
         ter.renderFrame(world);
     }
 }

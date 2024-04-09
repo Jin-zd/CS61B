@@ -4,6 +4,7 @@ import byow.Core.RandomUtils;
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,16 +14,16 @@ public class Rooms {
     private record RoomCoordinate(int left, int top, int bottom, int right) {
     }
 
-    private final TETile[][] world;
-    private final List<RoomCoordinate> rooms = new ArrayList<>();
+    private final TETile[][] WORLD;
+    private final List<RoomCoordinate> ROOMS = new ArrayList<>();
     private final int WIDTH;
     private final int HEIGHT;
     private final int DIST;
 
     public Rooms(TETile[][] world, int dist) {
-        this.world = world;
-        this.WIDTH = world.length;
-        this.HEIGHT = world[0].length;
+        this.WORLD = world;
+        this.WIDTH = WORLD.length;
+        this.HEIGHT = WORLD[0].length;
         this.DIST = dist;
     }
 
@@ -52,7 +53,7 @@ public class Rooms {
     private int[] startXY(int centerX, int centerY) {
         for (int i = centerX - 1; i < Math.min(WIDTH - DIST, centerX + DIST); i++) {
             for (int j = centerY - 1; j < Math.min(HEIGHT - DIST, centerY + DIST); j++) {
-                if (world[i][j] == Tileset.FLOOR) {
+                if (WORLD[i][j] == Tileset.FLOOR) {
                     return new int[]{i, j};
                 }
             }
@@ -89,14 +90,14 @@ public class Rooms {
             int top = Math.min(HEIGHT - DIST - 1, bottom + roomHeight);
             int right = Math.min(WIDTH - DIST - 1, left + roomWidth);
 
-            RoomCoordinate newRoom = new byow.World.Rooms.RoomCoordinate(left, top, bottom, right);
+            RoomCoordinate newRoom = new RoomCoordinate(left, top, bottom, right);
             boolean flag = true;
 
             if (roomCount == 0) {
-                rooms.add(newRoom);
+                ROOMS.add(newRoom);
                 roomCount += 1;
             } else {
-                for (RoomCoordinate room : rooms) {
+                for (RoomCoordinate room : ROOMS) {
                     if (isOverlap(room, newRoom)) {
                         flag = false;
                         break;
@@ -105,12 +106,12 @@ public class Rooms {
             }
 
             if (flag) {
-                rooms.add(newRoom);
+                ROOMS.add(newRoom);
                 roomCount += 1;
 
                 for (int m = left; m <= right; m++) {
                     for (int n = bottom; n <= top; n++) {
-                        world[m][n] = Tileset.ROOM;
+                        WORLD[m][n] = Tileset.ROOM;
                     }
                 }
             }
@@ -124,66 +125,78 @@ public class Rooms {
      * @param seed the random number seed
      */
     public void roomConnect(int seed) {
-        for (RoomCoordinate room : rooms) {
+        if (ROOMS.isEmpty()) {
+            return;
+        }
+        for (RoomCoordinate room : ROOMS) {
 
             Random r = new Random(seed);
-            int pathNum = RandomUtils.uniform(r, 1, 5);
+            int pathNum = RandomUtils.uniform(r, 1, 3);
+
+            while (pathNum != 0) {
+                int select = r.nextInt(seed);
+                if (select % 4 == 0) {
+                    // Top
+                    List<Integer> topPoints = new ArrayList<>();
+                    int maxTop = Math.min(room.top + DIST + 1, HEIGHT - 1);
+                    for (int i = room.left; i <= room.right; i++) {
+                        if (WORLD[i][maxTop] == Tileset.FLOOR) {
+                            topPoints.add(i);
+                        }
+                    }
+                    if (!topPoints.isEmpty()) {
+                        int connectPoint = closestPoint(topPoints, (room.left + room.right) / 2);
+                        WORLD[connectPoint][room.top + DIST - 1] = Tileset.FLOOR;
+                        WORLD[connectPoint][room.top + DIST] = Tileset.FLOOR;
+                    }
+                } else if (select % 4 == 1) {
+                    // Left
+                    List<Integer> leftPoints = new ArrayList<>();
+                    int minLeft = Math.max(DIST + 1, room.left - DIST - 1);
+                    for (int i = room.bottom; i <= room.top; i++) {
+                        if (WORLD[minLeft][i] == Tileset.FLOOR) {
+                            leftPoints.add(i);
+                        }
+                    }
+                    if (!leftPoints.isEmpty()) {
+                        int connectPoint = closestPoint(leftPoints, (room.bottom + room.top) / 2);
+                        WORLD[room.left - DIST + 1][connectPoint] = Tileset.FLOOR;
+                        WORLD[room.left - DIST][connectPoint] = Tileset.FLOOR;
+                    }
+                } else if (select % 4 == 2) {
+                    // Bottom
+                    List<Integer> bottomPoints = new ArrayList<>();
+                    int minBottom = Math.max(DIST, room.bottom - DIST - 1);
+                    for (int i = room.left; i <= room.right; i++) {
+                        if (WORLD[i][minBottom] == Tileset.FLOOR) {
+                            bottomPoints.add(i);
+                        }
+                    }
+                    if (!bottomPoints.isEmpty()) {
+                        int connectPoint = closestPoint(bottomPoints, (room.left + room.right) / 2);
+                        WORLD[connectPoint][room.bottom - DIST + 1] = Tileset.FLOOR;
+                        WORLD[connectPoint][room.bottom - DIST] = Tileset.FLOOR;
+                    }
+                } else {
+                    // Right
+                    List<Integer> rightPoints = new ArrayList<>();
+                    int maxRight = Math.min(WIDTH - DIST, room.right + DIST + 1);
+                    for (int i = room.bottom; i <= room.top; i++) {
+                        if (WORLD[maxRight][i] == Tileset.FLOOR) {
+                            rightPoints.add(i);
+                        }
+                    }
+                    if (!rightPoints.isEmpty()) {
+                        int connectPoint = closestPoint(rightPoints, (room.bottom + room.top) / 2);
+                        WORLD[room.right + DIST - 1][connectPoint] = Tileset.FLOOR;
+                        WORLD[room.right + DIST][connectPoint] = Tileset.FLOOR;
+                    }
+                }
+
+                pathNum -= 1;
+            }
+
             seed += 1;
-            // Top
-            List<Integer> topPoints = new ArrayList<>();
-            int maxTop = Math.min(room.top + DIST + 1, HEIGHT - 1);
-            for (int i = room.left; i <= room.right; i++) {
-                if (world[i][maxTop] == Tileset.FLOOR) {
-                    topPoints.add(i);
-                }
-            }
-            if (!topPoints.isEmpty()) {
-                int connectPoint = closestPoint(topPoints, (room.left + room.right) / 2);
-                world[connectPoint][room.top + DIST - 1] = Tileset.FLOOR;
-                world[connectPoint][room.top + DIST] = Tileset.FLOOR;
-            }
-
-            // Left
-            List<Integer> leftPoints = new ArrayList<>();
-            int minLeft = Math.max(DIST + 1, room.left - DIST - 1);
-            for (int i = room.bottom; i <= room.top; i++) {
-                if (world[minLeft][i] == Tileset.FLOOR) {
-                    leftPoints.add(i);
-                }
-            }
-            if (!leftPoints.isEmpty()) {
-                int connectPoint = closestPoint(leftPoints, (room.bottom + room.top) / 2);
-                world[room.left - DIST + 1][connectPoint] = Tileset.FLOOR;
-                world[room.left - DIST][connectPoint] = Tileset.FLOOR;
-            }
-
-            // Bottom
-            List<Integer> bottomPoints = new ArrayList<>();
-            int minBottom = Math.max(DIST, room.bottom - DIST - 1);
-            for (int i = room.left; i <= room.right; i++) {
-                if (world[i][minBottom] == Tileset.FLOOR) {
-                    bottomPoints.add(i);
-                }
-            }
-            if (!bottomPoints.isEmpty()) {
-                int connectPoint = closestPoint(bottomPoints, (room.left + room.right) / 2);
-                world[connectPoint][room.bottom - DIST + 1] = Tileset.FLOOR;
-                world[connectPoint][room.bottom - DIST] = Tileset.FLOOR;
-            }
-
-            // Right
-            List<Integer> rightPoints = new ArrayList<>();
-            int maxRight = Math.min(WIDTH - DIST, room.right + DIST + 1);
-            for (int i = room.bottom; i <= room.top; i++) {
-                if (world[maxRight][i] == Tileset.FLOOR) {
-                    rightPoints.add(i);
-                }
-            }
-            if (!rightPoints.isEmpty()) {
-                int connectPoint = closestPoint(rightPoints, (room.bottom + room.top) / 2);
-                world[room.right + DIST - 1][connectPoint] = Tileset.FLOOR;
-                world[room.right + DIST][connectPoint] = Tileset.FLOOR;
-            }
         }
     }
 
@@ -218,6 +231,51 @@ public class Rooms {
         } else {
             return mid - minLeft;
         }
+    }
+
+    /**
+     * Clean the redundant rooms
+     */
+    public void cleanRoom() {
+        List<RoomCoordinate> removeRooms = new ArrayList<>();
+        for (RoomCoordinate room : ROOMS) {
+            boolean isClean = true;
+            List<Point> roomAroundPoints = roomAround(room);
+            for (Point point : roomAroundPoints) {
+                if (WORLD[point.x][point.y] == Tileset.FLOOR) {
+                    isClean = false;
+                    break;
+                }
+            }
+            if (isClean) {
+                removeRooms.add(room);
+                for (int i = room.left; i <= room.right; i++) {
+                    for (int j = room.bottom; j <= room.top; j++) {
+                        WORLD[i][j] = Tileset.NOTHING;
+                    }
+                }
+            }
+        }
+        ROOMS.removeAll(removeRooms);
+    }
+
+    /**
+     * Find the points around the room
+     *
+     * @param room the target room
+     * @return the points around the target room
+     */
+    private List<Point> roomAround(RoomCoordinate room) {
+        List<Point> points = new ArrayList<>();
+        for (int x = room.left; x < room.right; x++) {
+            points.add(new Point(x, room.bottom - 1));
+            points.add(new Point(x, room.top));
+        }
+        for (int y = room.bottom; y < room.top; y++) {
+            points.add(new Point(room.left - 1, y));
+            points.add(new Point(room.right + 1, y));
+        }
+        return points;
     }
 
 
