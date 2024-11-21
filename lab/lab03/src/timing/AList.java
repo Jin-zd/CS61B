@@ -1,5 +1,7 @@
 package timing;
 
+import edu.princeton.cs.algs4.In;
+
 /** Array based list.
  *  @author Josh Hug
  */
@@ -63,4 +65,10 @@ public class AList<Item> {
         size = size - 1;
         return x;
     }
+
+    public static void main(String[] args) {
+        AList<Integer> list = new AList<>();
+        list.addLast(5);
+    }
+
 }
